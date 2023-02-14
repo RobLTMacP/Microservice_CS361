@@ -18,11 +18,19 @@ def encrypt(password):
         index = chars.index(character)
         cipher_pw += key[index]
     pw_tup = (cipher_pw, key)
-    json_str = json.dumps(pw_tup)
+    pw_dict = {
+        'password': pw_tup[0],
+        'key': pw_tup[1]
+    }
+    json_str = json.dumps(pw_dict)
     return json_str
 
 
-def decrypt(ciphered_pw, key):
+def decrypt(cipher_json):
+    data = json.loads(cipher_json)
+    ciphered_pw = data['password']
+    key = data['key']
+
     decrypt_pw = ""
     for character in ciphered_pw:
         index = key.index(character)
@@ -31,9 +39,7 @@ def decrypt(ciphered_pw, key):
 
 
 test_one = 'HelloWorld'
+print(test_one)
 pw_encrypt = encrypt(test_one)
 print(pw_encrypt)
-
-
-
-
+print(decrypt(pw_encrypt))
